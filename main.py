@@ -38,6 +38,14 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["entity_id"] == "pws_wind_speed")
     |> filter(fn: (r) => r["friendly_name"] == "PWS - Wind speed")
     |> filter(fn: (r) => r["source"] == "HA")"""
+    query_pressure = """from(bucket: "home_assistant")
+	|> range(start: -10)
+    |> filter(fn: (r) => r["_measurement"] == "hPa")
+    |> filter(fn: (r) => r["_field"] == "value")
+    |> filter(fn: (r) => r["domain"] == "sensor")
+    |> filter(fn: (r) => r["entity_id"] == "pws_barometer_absolute")
+    |> filter(fn: (r) => r["friendly_name"] == "PWS - Barometer (absolute)")
+    |> filter(fn: (r) => r["source"] == "HA")"""
 
 
     def query_value(query_name):
@@ -53,11 +61,12 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     if rain is None:
         rain = 0
     wind = query_value(query_wind)
+    pressure = query_value(query_pressure)
 
 
 @app.route('/')
 def weather():
-    return render_template('index.html', temp=temperature, rain=rain, wind=wind)
+    return render_template('index.html', temp=temperature, rain=rain, wind=wind, pressure= pressure)
 
 
 if __name__ == '__main__':
