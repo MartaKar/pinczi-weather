@@ -1,6 +1,9 @@
 body {
   background-color: #37E2D5;
 }
+h1{
+  font-size: 70px;
+}
 .note {
   background: #fff;
   border-radius: 7px;
@@ -11,6 +14,5 @@ body {
   text-align: center;
   color: #413F42;
   font-family: 'Rubik';
-  font-size: large;
 }
 
