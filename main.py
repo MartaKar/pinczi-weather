@@ -23,7 +23,7 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["friendly_name"] == "PWS - Temperature")
     |> filter(fn: (r) => r["source"] == "HA")"""
     query_rain = """from(bucket: "home_assistant")
-	|> range(start: -10m)
+    |> range(start: -10m)
     |> filter(fn: (r) => r["_measurement"] == "mm/h")
     |> filter(fn: (r) => r["_field"] == "value")
     |> filter(fn: (r) => r["domain"] == "sensor")
@@ -31,7 +31,7 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["friendly_name"] == "PWS - Rainrate")
     |> filter(fn: (r) => r["source"] == "HA")"""
     query_wind = """from(bucket: "home_assistant")
-	|> range(start: -10)
+    |> range(start: -10m)
     |> filter(fn: (r) => r["_measurement"] == "m/s")
     |> filter(fn: (r) => r["_field"] == "value")
     |> filter(fn: (r) => r["domain"] == "sensor")
@@ -39,7 +39,7 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["friendly_name"] == "PWS - Wind speed")
     |> filter(fn: (r) => r["source"] == "HA")"""
     query_pressure = """from(bucket: "home_assistant")
-	|> range(start: -10)
+    |> range(start: -10m)
     |> filter(fn: (r) => r["_measurement"] == "hPa")
     |> filter(fn: (r) => r["_field"] == "value")
     |> filter(fn: (r) => r["domain"] == "sensor")
@@ -48,28 +48,26 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["source"] == "HA")"""
 
 
-    def query_value(query_name):
-        tables = query_api.query(query_name)
-        for table in tables:
-            for record in table.records:
-                output = str(record.get_value())
-                return output
+def query_value(query_name):
+    tables = query_api.query(query_name)
+    for table in tables:
+        for record in table.records:
+            output = str(record.get_value())
+            return output
 
 
-    pressure = query_value(query_pressure)
-    temperature = query_value(query_temp)
-    rain = query_value(query_rain)
-    wind = query_value(query_wind)
+pressure = query_value(query_pressure)
+temperature = query_value(query_temp)
+rain = query_value(query_rain)
+wind = query_value(query_wind)
 
-    if rain is None:
-        rain = 0
-
-
+if rain is None:
+    rain = 0
 
 
 @app.route('/')
 def weather():
-    return render_template('index.html', temp=temperature, rain=rain, wind=wind, pressure= pressure)
+    return render_template('index.html', temp=temperature, rain=rain, wind=wind, pressure=pressure)
 
 
 if __name__ == '__main__':
