@@ -56,10 +56,11 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
                 return output
 
 
+    pressure = query_value(query_pressure)
     temperature = query_value(query_temp)
     rain = query_value(query_rain)
     wind = query_value(query_wind)
-    pressure = query_value(query_pressure)
+
     if rain is None:
         rain = 0
 
