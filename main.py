@@ -8,9 +8,10 @@ os.environ[
     "INFLUXDB_TOKEN"] = "ZplOmxakWYZe8BnDXxLqrvPBcWvkyZTCWauPcBW8LVZ48i2M7wTHAwgPqW0wGm7LbISlTJdNayex70mWzZNw4g=="
 
 token = os.environ.get("INFLUXDB_TOKEN")
-
 org = "pkaras3@gmail.com"
 url = "https://eu-central-1-1.aws.cloud2.influxdata.com"
+
+
 
 with InfluxDBClient(url=url, token=token, org=org) as client:
     query_api = client.query_api()
@@ -56,18 +57,18 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
                 return output
 
 
+class CreateVariables:
     pressure = query_value(query_pressure)
     temperature = query_value(query_temp)
     rain = query_value(query_rain)
     wind = query_value(query_wind)
 
-    if rain is None:
-        rain = 0
-
-
 @app.route('/')
 def weather():
-    return render_template('index.html', temp=temperature, rain=rain, wind=wind, pressure=pressure)
+    new_variables = CreateVariables()
+    if new_variables.rain is None:
+        new_variables.rain = 0
+    return render_template('index.html', temp=new_variables.temperature, rain=new_variables.rain, wind=new_variables.wind, pressure=new_variables.pressure)
 
 
 if __name__ == '__main__':
