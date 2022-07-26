@@ -15,7 +15,7 @@ url = "https://eu-central-1-1.aws.cloud2.influxdata.com"
 with InfluxDBClient(url=url, token=token, org=org) as client:
     query_api = client.query_api()
     query_temp = """from(bucket: "home_assistant")
-    |> range(start: -10m)
+    |> range(start: -5m)
     |> filter(fn: (r) => r["_measurement"] == "°C")
     |> filter(fn: (r) => r["_field"] == "value")
     |> filter(fn: (r) => r["domain"] == "sensor")
@@ -23,7 +23,7 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["friendly_name"] == "PWS - Temperature")
     |> filter(fn: (r) => r["source"] == "HA")"""
     query_rain = """from(bucket: "home_assistant")
-    |> range(start: -10m)
+    |> range(start: -5m)
     |> filter(fn: (r) => r["_measurement"] == "mm/h")
     |> filter(fn: (r) => r["_field"] == "value")
     |> filter(fn: (r) => r["domain"] == "sensor")
@@ -31,7 +31,7 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["friendly_name"] == "PWS - Rainrate")
     |> filter(fn: (r) => r["source"] == "HA")"""
     query_wind = """from(bucket: "home_assistant")
-    |> range(start: -10m)
+    |> range(start: -5m)
     |> filter(fn: (r) => r["_measurement"] == "m/s")
     |> filter(fn: (r) => r["_field"] == "value")
     |> filter(fn: (r) => r["domain"] == "sensor")
@@ -39,7 +39,7 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["friendly_name"] == "PWS - Wind speed")
     |> filter(fn: (r) => r["source"] == "HA")"""
     query_pressure = """from(bucket: "home_assistant")
-    |> range(start: -10m)
+    |> range(start: -5m)
     |> filter(fn: (r) => r["_measurement"] == "hPa")
     |> filter(fn: (r) => r["_field"] == "value")
     |> filter(fn: (r) => r["domain"] == "sensor")
