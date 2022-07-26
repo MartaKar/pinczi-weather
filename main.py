@@ -48,12 +48,12 @@ with InfluxDBClient(url=url, token=token, org=org) as client:
     |> filter(fn: (r) => r["source"] == "HA")"""
 
 
-def query_value(query_name):
-    tables = query_api.query(query_name)
-    for table in tables:
-        for record in table.records:
-            output = str(record.get_value())
-            return output
+    def query_value(query_name):
+        tables = query_api.query(query_name)
+        for table in tables:
+            for record in table.records:
+                output = str(record.get_value())
+                return output
 
 
 pressure = query_value(query_pressure)
