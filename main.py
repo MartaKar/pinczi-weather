@@ -4,8 +4,7 @@ from flask import Flask, render_template
 from datetime import datetime
 import pytz
 
-warsaw_tz = pytz.timezone('Europe/Warsaw')
-now = datetime.now().astimezone(warsaw_tz)
+
 
 app = Flask(__name__)
 
@@ -71,6 +70,8 @@ class CreateVariables:
 
 @app.route('/')
 def weather():
+    warsaw_tz = pytz.timezone('Europe/Warsaw')
+    now = datetime.now().astimezone(warsaw_tz)
     date = now.strftime("%d/%m/%Y %H:%M:%S")
     new_variables = CreateVariables()
     if new_variables.rain is None:
