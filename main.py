@@ -5,7 +5,8 @@ from datetime import datetime
 import pytz
 
 warsaw_tz = pytz.timezone('Europe/Warsaw')
-now = warsaw_tz.localize(datetime.now())
+now = datetime.now().astimezone(warsaw_tz)
+
 app = Flask(__name__)
 
 os.environ[
