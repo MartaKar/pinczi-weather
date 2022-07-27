@@ -1,6 +1,8 @@
 import os
 from influxdb_client import InfluxDBClient
 from flask import Flask, render_template
+from datetime import datetime
+now = datetime.now()
 
 app = Flask(__name__)
 
@@ -66,10 +68,13 @@ class CreateVariables:
 
 @app.route('/')
 def weather():
+    date = now.strftime("%d/%m/%Y %H:%M:%S")
     new_variables = CreateVariables()
     if new_variables.rain is None:
         new_variables.rain = 0
-    return render_template('index.html', temp=new_variables.temperature, rain=new_variables.rain, wind=new_variables.wind, pressure=new_variables.pressure)
+    if new_variables.temperature is None:
+        new_variables.temperature = "To Piotrek zapsuł"
+    return render_template('index.html', date=date, temp=new_variables.temperature, rain=new_variables.rain, wind=new_variables.wind, pressure=new_variables.pressure)
 
 
 if __name__ == '__main__':
