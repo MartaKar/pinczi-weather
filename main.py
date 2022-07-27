@@ -2,8 +2,10 @@ import os
 from influxdb_client import InfluxDBClient
 from flask import Flask, render_template
 from datetime import datetime
-now = datetime.now()
+import pytz
 
+warsaw_tz = pytz.timezone('Europe/Warsaw')
+now = warsaw_tz.localize(datetime.now())
 app = Flask(__name__)
 
 os.environ[
